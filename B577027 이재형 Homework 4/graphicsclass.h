@@ -4,7 +4,7 @@
 #ifndef _GRAPHICSCLASS_H_
 #define _GRAPHICSCLASS_H_
 
-#include <map>
+#include <Vector>
 ///////////////////////
 // MY CLASS INCLUDES //
 ///////////////////////
@@ -34,6 +34,8 @@ struct Model
 	ModelClass* model;
 	const char* filename;
 	const WCHAR* texturename;
+
+	D3DXVECTOR3 pos;
 };
 
 class GraphicsClass
@@ -64,21 +66,21 @@ private:
 private:
 	D3DClass* m_D3D;
 	CameraClass* m_Camera;
-	Model m_Model[4];
 	LightShaderClass* m_LightShader;
 	LightClass* m_Light;
 	TextClass* m_Text;
 	
 	SkyboxClass* m_Skybox;
 
+	vector<Model> Models;
+	Model GroundModel;
+	Model PlayerModel, ComModel, BallModel;
+
 	int Objs, Polys;
 
 	D3DXVECTOR3 CamPos, CamRot;
 	float speed = 10.0f;
 	float PreX, PreY;
-
-	Model PlayerModel, ComModel, BallModel;
-	D3DXVECTOR3 PlayerPos, ComPos, BallPos;
 };
 
 #endif

@@ -26,9 +26,12 @@ GraphicsClass::GraphicsClass()
 	PreX = 0.0f;
 	PreY = 0.0f;
 
-	PlayerPos = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
-	ComPos = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
-	BallPos = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+	PlayerModel.model = 0;
+	PlayerModel.pos = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+	ComModel.model = 0;
+	ComModel.pos = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+	BallModel.model = 0;
+	BallModel.pos = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 }
 GraphicsClass::GraphicsClass(const GraphicsClass& other)
 {
@@ -79,32 +82,28 @@ bool GraphicsClass::Initialize(int screenWidth, int screenHeight, HWND hwnd)
 	}
 
 	// Create the model object.
-	for (int i = 0; i < 6; i++)
-	{
-		m_Model[i].model = new ModelClass;
-		if (!m_Model)
-		{
-			return false;
-		}
-	}
+	Models.push_back(GroundModel);
+	Models.push_back(PlayerModel);
+	Models.push_back(ComModel);
+	Models.push_back(BallModel);
 
 	//  obj파일들을 불러옵니다.
 	ObjParser* parser = new ObjParser;
 
-	m_Model[0].filename = "../Engine/data/objs/ground.obj";
+	GroundModel.filename = "../Engine/data/objs/ground.obj";
 	PlayerModel.filename = "../Engine/data/objs/Player.obj";
 	ComModel.filename = "../Engine/data/objs/Player.obj";
 	BallModel.filename = "../Engine/data/objs/Ball.obj";
 
-	m_Model[0].texturename = L"../Engine/data/textures/metal.dds";
-	m_Model[1].texturename = L"../Engine/data/textures/Player.dds";
-	m_Model[2].texturename = L"../Engine/data/textures/Com.dds";
-	m_Model[3].texturename = L"../Engine/data/textures/M33.dds";
+	GroundModel.texturename = L"../Engine/data/textures/metal.dds";
+	PlayerModel.texturename = L"../Engine/data/textures/Player.dds";
+	ComModel.texturename = L"../Engine/data/textures/Com.dds";
+	BallModel.texturename = L"../Engine/data/textures/M33.dds";
 
-	for (int i = 0; i < 6; i++)
+	for (int i = 0; i < Models.size() - 1; i++)
 	{
-		parser->Parse(m_Model[i].filename);
-		result = m_Model[i].model->Initialize(m_D3D->GetDevice(), "../B577027 이재형 Homework 4/model.txt", m_Model[i].texturename);
+		parser->Parse(Models.at(i).filename);
+		Models.at(i).model->Initialize(m_D3D->GetDevice(), "../B577027 이재형 Homework 4/model.txt", Models.at(i).texturename);
 		if (!result)
 		{
 			MessageBox(hwnd, L"Could not initialize the model object.", L"Error", MB_OK);
@@ -189,11 +188,11 @@ void GraphicsClass::Shutdown()
 	}
 
 	// Release the model object.
-	for (int i = 0; i < 6; i++)
+	for (int i = 0; i < Models.size() - 1; i++)
 	{
-		m_Model[i].model->Shutdown();
-		delete m_Model[i].model;
-		m_Model[i].model = 0;
+		Models.at(i).model->Shutdown();
+		delete Models.at(i).model;
+		Models.at(i).model = 0;
 	}
 
 	if (m_Skybox)
@@ -234,8 +233,8 @@ bool GraphicsClass::Frame(int mouseX, int mouseY, int fps, int cpu, float frameT
 {
 	bool result;
 	static float rotation = 0.0f;
-	
-	
+
+
 	CamRot.y -= (PreX - mouseX) * 0.1f;
 	CamRot.x -= (PreY - mouseY) * 0.1f;
 
@@ -336,33 +335,26 @@ bool GraphicsClass::Render(float rotation)
 	//  3차원 파트
 	// Put the model vertex and index buffers on the graphics pipeline to prepare them for drawing.
 	// Render the model using the light shader.
-	m_Model[0].model->Render(m_D3D->GetDeviceContext());
-	result = m_LightShader->Render(m_D3D->GetDeviceContext(), m_Model[0].model->GetIndexCount(), worldMatrix, viewMatrix, projectionMatrix,
-		m_Model[0].model->GetTexture(), m_Light->GetDirection(), m_Light->GetAmbientColor(), m_Light->GetDiffuseColor(),
-		m_Camera->GetPosition(), m_Light->GetSpecularColor(), m_Light->GetSpecularPower());
-	if (!result)
-	{
-		return false;
-	}
 
 	// Rotate the world matrix by the rotation value so that the triangle will spin.
 	D3DXMatrixRotationY(&worldMatrix, rotation);
 	D3DXMatrixTranslation(&translateMatrix, -180.0f, 20.0f, 0.0f);
 	D3DXMatrixMultiply(&worldMatrix, &worldMatrix, &translateMatrix);
 
-	//  총기 오브젝트 렌더
-	for (int i = 1; i < 6; i++)
+	for (int i = 0; i < Models.size() - 1; i++)
 	{
 		D3DXMatrixTranslation(&translateMatrix, 60.0f, 0.0f, 0.0f);
 		D3DXMatrixMultiply(&worldMatrix, &worldMatrix, &translateMatrix);
 
-		m_Model[i].model->Render(m_D3D->GetDeviceContext());
-		result = m_LightShader->Render(m_D3D->GetDeviceContext(), m_Model[i].model->GetIndexCount(), worldMatrix,
-			viewMatrix, projectionMatrix, m_Model[i].model->GetTexture(), m_Light->GetDirection(),
-			m_Light->GetAmbientColor(), m_Light->GetDiffuseColor(), m_Camera->GetPosition(),
-			m_Light->GetSpecularColor(), m_Light->GetSpecularPower());
+		Models.at(i).model->Render(m_D3D->GetDeviceContext());
+		result = m_LightShader->Render(m_D3D->GetDeviceContext(), Models.at(i).model->GetIndexCount(), worldMatrix, viewMatrix, projectionMatrix,
+			Models.at(i).model->GetTexture(), m_Light->GetDirection(), m_Light->GetAmbientColor(), m_Light->GetDiffuseColor(),
+			m_Camera->GetPosition(), m_Light->GetSpecularColor(), m_Light->GetSpecularPower());
+		if (!result)
+		{
+			return false;
+		}
 	}
-
 
 	D3DXMatrixIdentity(&worldMatrix);
 	//  2차원 파트
