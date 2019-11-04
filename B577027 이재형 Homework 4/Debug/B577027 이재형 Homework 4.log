@@ -1,6 +1,6 @@
 ﻿  graphicsclass.cpp
-c:\users\b407_8\documents\b577027-homework-4\b577027 이재형 homework 4\graphicsclass.cpp(103): warning C4018: '<': signed 또는 unsigned가 일치하지 않습니다.
-c:\users\b407_8\documents\b577027-homework-4\b577027 이재형 homework 4\graphicsclass.cpp(200): warning C4018: '<': signed 또는 unsigned가 일치하지 않습니다.
-c:\users\b407_8\documents\b577027-homework-4\b577027 이재형 homework 4\graphicsclass.cpp(353): warning C4018: '<': signed 또는 unsigned가 일치하지 않습니다.
-c:\users\b407_8\documents\b577027-homework-4\b577027 이재형 homework 4\graphicsclass.cpp(467): warning C4244: '-=': 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-  B577027 이재형 Homework 4.vcxproj -> C:\Users\B407_8\Documents\B577027-Homework-4\Debug\B577027 이재형 Homework 4.exe
+c:\users\sophriel\onedrive - 홍익대학교\홍익대학교\코딩\컴퓨터 그래픽스 실습 예진짱 슈퍼 업그레이드버전\b577027 이재형 homework 4\b577027 이재형 homework 4\graphicsclass.cpp(105): warning C4018: '<': signed 또는 unsigned가 일치하지 않습니다.
+c:\users\sophriel\onedrive - 홍익대학교\홍익대학교\코딩\컴퓨터 그래픽스 실습 예진짱 슈퍼 업그레이드버전\b577027 이재형 homework 4\b577027 이재형 homework 4\graphicsclass.cpp(202): warning C4018: '<': signed 또는 unsigned가 일치하지 않습니다.
+c:\users\sophriel\onedrive - 홍익대학교\홍익대학교\코딩\컴퓨터 그래픽스 실습 예진짱 슈퍼 업그레이드버전\b577027 이재형 homework 4\b577027 이재형 homework 4\graphicsclass.cpp(354): warning C4018: '<': signed 또는 unsigned가 일치하지 않습니다.
+c:\users\sophriel\onedrive - 홍익대학교\홍익대학교\코딩\컴퓨터 그래픽스 실습 예진짱 슈퍼 업그레이드버전\b577027 이재형 homework 4\b577027 이재형 homework 4\graphicsclass.cpp(468): warning C4244: '-=': 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+  B577027 이재형 Homework 4.vcxproj -> C:\Users\Sophriel\OneDrive - 홍익대학교\홍익대학교\코딩\컴퓨터 그래픽스 실습 예진짱 슈퍼 업그레이드버전\B577027 이재형 Homework 4\Debug\B577027 이재형 Homework 4.exe

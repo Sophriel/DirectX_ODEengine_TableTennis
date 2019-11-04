@@ -26,12 +26,24 @@ GraphicsClass::GraphicsClass()
 	PreX = 0.0f;
 	PreY = 0.0f;
 
+	GroundModel.model = 0;
+	GroundModel.pos = D3DXVECTOR3(0.0f, -50.0f, 0.0f);
 	PlayerModel.model = 0;
-	PlayerModel.pos = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+	PlayerModel.pos = D3DXVECTOR3(100.0f, 0.0f, 0.0f);
 	ComModel.model = 0;
-	ComModel.pos = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+	ComModel.pos = D3DXVECTOR3(-100.0f, 0.0f, 0.0f);
 	BallModel.model = 0;
 	BallModel.pos = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+
+	GroundModel.filename = "../Engine/data/objs/ground.obj";
+	PlayerModel.filename = "../Engine/data/objs/Player.obj";
+	ComModel.filename = "../Engine/data/objs/Player.obj";
+	BallModel.filename = "../Engine/data/objs/Ball.obj";
+
+	GroundModel.texturename = L"../Engine/data/textures/metal.dds";
+	PlayerModel.texturename = L"../Engine/data/textures/Player.dds";
+	ComModel.texturename = L"../Engine/data/textures/Com.dds";
+	BallModel.texturename = L"../Engine/data/textures/M33.dds";
 }
 GraphicsClass::GraphicsClass(const GraphicsClass& other)
 {
@@ -81,16 +93,6 @@ bool GraphicsClass::Initialize(int screenWidth, int screenHeight, HWND hwnd)
 		return false;
 	}
 
-	GroundModel.filename = "../Engine/data/objs/ground.obj";
-	PlayerModel.filename = "../Engine/data/objs/Player.obj";
-	ComModel.filename = "../Engine/data/objs/Player.obj";
-	BallModel.filename = "../Engine/data/objs/Ball.obj";
-
-	GroundModel.texturename = L"../Engine/data/textures/metal.dds";
-	PlayerModel.texturename = L"../Engine/data/textures/Player.dds";
-	ComModel.texturename = L"../Engine/data/textures/Com.dds";
-	BallModel.texturename = L"../Engine/data/textures/M33.dds";
-
 	// Create the model object.
 	Models.push_back(&GroundModel);
 	Models.push_back(&PlayerModel);
@@ -100,7 +102,7 @@ bool GraphicsClass::Initialize(int screenWidth, int screenHeight, HWND hwnd)
 	//  obj파일들을 불러옵니다.
 	ObjParser* parser = new ObjParser;
 
-	for (int i = 0; i < Models.size() - 1; i++)
+	for (int i = 0; i < Models.size(); i++)
 	{
 		Models.at(i)->model = new ModelClass();
 		if (!Models.at(i)->model)
@@ -323,7 +325,6 @@ bool GraphicsClass::Frame(int mouseX, int mouseY, int fps, int cpu, float frameT
 bool GraphicsClass::Render(float rotation)
 {
 	D3DXMATRIX worldMatrix, viewMatrix, projectionMatrix, orthoMatrix, translateMatrix;
-	D3DXMATRIX PlayerMatrix, ComMatrix, BallMatrix;
 	bool result;
 
 	// Clear the buffers to begin the scene.
@@ -350,7 +351,7 @@ bool GraphicsClass::Render(float rotation)
 	//D3DXMatrixTranslation(&translateMatrix, -180.0f, 20.0f, 0.0f);
 	//D3DXMatrixMultiply(&worldMatrix, &worldMatrix, &translateMatrix);
 
-	for (int i = 0; i < Models.size() - 1; i++)
+	for (int i = 0; i < Models.size(); i++)
 	{
 		D3DXMatrixIdentity(&worldMatrix);
 		D3DXMatrixTranslation(&translateMatrix, Models.at(i)->pos.x, Models.at(i)->pos.y, Models.at(i)->pos.z);
@@ -468,9 +469,9 @@ void GraphicsClass::MoveDown()
 }
 void GraphicsClass::MoveLeft()
 {
-	PlayerModel.pos.x -= 0.5f * speed;
+	PlayerModel.pos.z -= 0.5f * speed;
 }
 void GraphicsClass::MoveRight()
 {
-	PlayerModel.pos.x += 0.5f * speed;
+	PlayerModel.pos.z += 0.5f * speed;
 }
