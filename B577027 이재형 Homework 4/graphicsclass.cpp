@@ -81,15 +81,6 @@ bool GraphicsClass::Initialize(int screenWidth, int screenHeight, HWND hwnd)
 		return false;
 	}
 
-	// Create the model object.
-	Models.push_back(GroundModel);
-	Models.push_back(PlayerModel);
-	Models.push_back(ComModel);
-	Models.push_back(BallModel);
-
-	//  obj파일들을 불러옵니다.
-	ObjParser* parser = new ObjParser;
-
 	GroundModel.filename = "../Engine/data/objs/ground.obj";
 	PlayerModel.filename = "../Engine/data/objs/Player.obj";
 	ComModel.filename = "../Engine/data/objs/Player.obj";
@@ -100,15 +91,33 @@ bool GraphicsClass::Initialize(int screenWidth, int screenHeight, HWND hwnd)
 	ComModel.texturename = L"../Engine/data/textures/Com.dds";
 	BallModel.texturename = L"../Engine/data/textures/M33.dds";
 
+	// Create the model object.
+	Models.push_back(&GroundModel);
+	Models.push_back(&PlayerModel);
+	Models.push_back(&ComModel);
+	Models.push_back(&BallModel);
+
+	//  obj파일들을 불러옵니다.
+	ObjParser* parser = new ObjParser;
+
 	for (int i = 0; i < Models.size() - 1; i++)
 	{
-		parser->Parse(Models.at(i).filename);
-		Models.at(i).model->Initialize(m_D3D->GetDevice(), "../B577027 이재형 Homework 4/model.txt", Models.at(i).texturename);
+		Models.at(i)->model = new ModelClass();
+		if (!Models.at(i)->model)
+		{
+			MessageBox(hwnd, L"Could not create the model object.", L"Error", MB_OK);
+			return false;
+		}
+
+		parser->Parse(Models.at(i)->filename);
+
+		Models.at(i)->model->Initialize(m_D3D->GetDevice(), "../B577027 이재형 Homework 4/model.txt", Models.at(i)->texturename);
 		if (!result)
 		{
 			MessageBox(hwnd, L"Could not initialize the model object.", L"Error", MB_OK);
 			return false;
 		}
+
 		Objs++;
 		Polys += (parser->vertexCount) / 3;
 	}
@@ -190,9 +199,9 @@ void GraphicsClass::Shutdown()
 	// Release the model object.
 	for (int i = 0; i < Models.size() - 1; i++)
 	{
-		Models.at(i).model->Shutdown();
-		delete Models.at(i).model;
-		Models.at(i).model = 0;
+		Models.at(i)->model->Shutdown();
+		delete Models.at(i)->model;
+		Models.at(i)->model = 0;
 	}
 
 	if (m_Skybox)
@@ -337,18 +346,19 @@ bool GraphicsClass::Render(float rotation)
 	// Render the model using the light shader.
 
 	// Rotate the world matrix by the rotation value so that the triangle will spin.
-	D3DXMatrixRotationY(&worldMatrix, rotation);
-	D3DXMatrixTranslation(&translateMatrix, -180.0f, 20.0f, 0.0f);
-	D3DXMatrixMultiply(&worldMatrix, &worldMatrix, &translateMatrix);
+	//D3DXMatrixRotationY(&worldMatrix, rotation);
+	//D3DXMatrixTranslation(&translateMatrix, -180.0f, 20.0f, 0.0f);
+	//D3DXMatrixMultiply(&worldMatrix, &worldMatrix, &translateMatrix);
 
 	for (int i = 0; i < Models.size() - 1; i++)
 	{
-		D3DXMatrixTranslation(&translateMatrix, 60.0f, 0.0f, 0.0f);
+		D3DXMatrixIdentity(&worldMatrix);
+		D3DXMatrixTranslation(&translateMatrix, Models.at(i)->pos.x, Models.at(i)->pos.y, Models.at(i)->pos.z);
 		D3DXMatrixMultiply(&worldMatrix, &worldMatrix, &translateMatrix);
 
-		Models.at(i).model->Render(m_D3D->GetDeviceContext());
-		result = m_LightShader->Render(m_D3D->GetDeviceContext(), Models.at(i).model->GetIndexCount(), worldMatrix, viewMatrix, projectionMatrix,
-			Models.at(i).model->GetTexture(), m_Light->GetDirection(), m_Light->GetAmbientColor(), m_Light->GetDiffuseColor(),
+		Models.at(i)->model->Render(m_D3D->GetDeviceContext());
+		result = m_LightShader->Render(m_D3D->GetDeviceContext(), Models.at(i)->model->GetIndexCount(), worldMatrix, viewMatrix, projectionMatrix,
+			Models.at(i)->model->GetTexture(), m_Light->GetDirection(), m_Light->GetAmbientColor(), m_Light->GetDiffuseColor(),
 			m_Camera->GetPosition(), m_Light->GetSpecularColor(), m_Light->GetSpecularPower());
 		if (!result)
 		{
@@ -450,17 +460,17 @@ void GraphicsClass::GoRight()
 
 void GraphicsClass::MoveUp()
 {
-
+	PlayerModel.pos.y += 0.5f * speed;
 }
 void GraphicsClass::MoveDown()
 {
-
+	PlayerModel.pos.y -= 0.5 * speed;
 }
 void GraphicsClass::MoveLeft()
 {
-
+	PlayerModel.pos.x -= 0.5f * speed;
 }
 void GraphicsClass::MoveRight()
 {
-
+	PlayerModel.pos.x += 0.5f * speed;
 }

@@ -72,7 +72,7 @@ private:
 	
 	SkyboxClass* m_Skybox;
 
-	vector<Model> Models;
+	vector<Model*> Models;
 	Model GroundModel;
 	Model PlayerModel, ComModel, BallModel;
 
