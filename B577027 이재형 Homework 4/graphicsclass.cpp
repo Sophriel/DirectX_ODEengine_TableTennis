@@ -129,7 +129,7 @@ bool GraphicsClass::Initialize(int screenWidth, int screenHeight, HWND hwnd)
 		}
 
 		dTriMeshDataID tmdata = dGeomTriMeshDataCreate();
-		dGeomTriMeshDataBuildDouble(tmdata, &(parser->dVertices), 3 * sizeof(float), parser->vertexCount,
+		dGeomTriMeshDataBuildDouble(tmdata, parser->dVertices, 3 * sizeof(float), parser->vertexCount,
 			(dTriIndex*)&(parser->dIndices[0]), Models.at(i)->model->GetIndexCount(), 3 * sizeof(dTriIndex));
 		//dGeomTriMeshDataBuildDouble(tmdata, &deVertices, 3 * sizeof(float), deVertexCount,
 		//	(dTriIndex*)&deIndices[0], deIndexCount, 3 * sizeof(dTriIndex));

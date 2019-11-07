@@ -139,11 +139,6 @@ bool ObjParser::LoadDataStructures()
 	}
 
 	dVertices = new float[vertexCount * 3];
-	//dIndices = new dTriIndex*[faceCount];
-	//for (int i = 0; i < faceCount; ++i)
-	//{
-	//	dIndices[i] = new dTriIndex[3];
-	//}
 
 	// Initialize the indexes.
 	vertexIndex = 0;
@@ -216,9 +211,7 @@ bool ObjParser::LoadDataStructures()
 					faces[faceIndex].vIndex2 >> input2 >> faces[faceIndex].tIndex2 >> input2 >> faces[faceIndex].nIndex2 >>
 					faces[faceIndex].vIndex1 >> input2 >> faces[faceIndex].tIndex1 >> input2 >> faces[faceIndex].nIndex1;
 
-
-				dTriIndex ti[3] = { faces[faceIndex].vIndex1, faces[faceIndex].vIndex2, faces[faceIndex].vIndex3 };
-				dIndices[faceIndex] = ti;
+				dIndices.push_back(new dTriIndex[3]);
 
 				faceIndex++;
 			}

@@ -5,6 +5,7 @@
 #include <fstream>
 using namespace std;
 
+#include <vector>
 #include <ode/ode.h>
 
 
@@ -31,7 +32,7 @@ public:
 	int vertexCount, textureCount, normalCount, faceCount;
 
 	float *dVertices;
-	dTriIndex **dIndices;
+	vector<dTriIndex[3]> dIndices;
 
 private:
 	bool result;
