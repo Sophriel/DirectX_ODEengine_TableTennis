@@ -3,6 +3,14 @@
 ////////////////////////////////////////////////////////////////////////////////
 #include "graphicsclass.h"
 
+Model::Model()
+{
+
+}
+Model::~Model()
+{
+
+}
 GraphicsClass::GraphicsClass()
 {
 	m_D3D = 0;
@@ -120,6 +128,12 @@ bool GraphicsClass::Initialize(int screenWidth, int screenHeight, HWND hwnd)
 			return false;
 		}
 
+		dTriMeshDataID tmdata = dGeomTriMeshDataCreate();
+		dGeomTriMeshDataBuildDouble(tmdata, &(parser->dVertices), 3 * sizeof(float), parser->vertexCount,
+			(dTriIndex*)&(parser->dIndices[0]), Models.at(i)->model->GetIndexCount(), 3 * sizeof(dTriIndex));
+		//dGeomTriMeshDataBuildDouble(tmdata, &deVertices, 3 * sizeof(float), deVertexCount,
+		//	(dTriIndex*)&deIndices[0], deIndexCount, 3 * sizeof(dTriIndex));
+
 		Objs++;
 		Polys += (parser->vertexCount) / 3;
 	}
@@ -199,7 +213,7 @@ void GraphicsClass::Shutdown()
 	}
 
 	// Release the model object.
-	for (int i = 0; i < Models.size() - 1; i++)
+	for (int i = 0; i < Models.size(); i++)
 	{
 		Models.at(i)->model->Shutdown();
 		delete Models.at(i)->model;
@@ -465,7 +479,7 @@ void GraphicsClass::MoveUp()
 }
 void GraphicsClass::MoveDown()
 {
-	PlayerModel.pos.y -= 0.5 * speed;
+	PlayerModel.pos.y -= 0.5f * speed;
 }
 void GraphicsClass::MoveLeft()
 {

@@ -1,12 +1,16 @@
 #pragma once
 
+#define dDOUBLE
+
 #include <fstream>
 using namespace std;
+
+#include <ode/ode.h>
 
 
 class ObjParser
 {
-private:
+public:
 	struct VertexType
 	{
 		float x, y, z;
@@ -25,6 +29,9 @@ public:
 	void Parse(const char*);
 
 	int vertexCount, textureCount, normalCount, faceCount;
+
+	float *dVertices;
+	dTriIndex **dIndices;
 
 private:
 	bool result;

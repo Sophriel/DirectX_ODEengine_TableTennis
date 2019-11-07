@@ -106,9 +106,9 @@ bool ObjParser::ReadFileCounts()
 
 bool ObjParser::LoadDataStructures()
 {
+	ifstream fin;
 	VertexType *vertices, *texcoords, *normals;
 	FaceType *faces;
-	ifstream fin;
 	int vertexIndex, texcoordIndex, normalIndex, faceIndex, vIndex, tIndex, nIndex;
 	char input = NULL, input2 = NULL;
 	ofstream fout;
@@ -138,6 +138,13 @@ bool ObjParser::LoadDataStructures()
 		return false;
 	}
 
+	dVertices = new float[vertexCount * 3];
+	//dIndices = new dTriIndex*[faceCount];
+	//for (int i = 0; i < faceCount; ++i)
+	//{
+	//	dIndices[i] = new dTriIndex[3];
+	//}
+
 	// Initialize the indexes.
 	vertexIndex = 0;
 	texcoordIndex = 0;
@@ -164,8 +171,11 @@ bool ObjParser::LoadDataStructures()
 			// Read in the vertices.
 			if (input == ' ')
 			{
-				fin >> vertices[vertexIndex].x >> vertices[vertexIndex].y >>
-					vertices[vertexIndex].z;
+				fin >> vertices[vertexIndex].x >> vertices[vertexIndex].y >> vertices[vertexIndex].z;
+
+				dVertices[0 + (vertexIndex * 3)] = vertices[vertexIndex].x;
+				dVertices[1 + (vertexIndex * 3)] = vertices[vertexIndex].y;
+				dVertices[2 + (vertexIndex * 3)] = vertices[vertexIndex].z;
 
 				// Invert the Z vertex to change to left hand system.
 				vertices[vertexIndex].z = vertices[vertexIndex].z * -1.0f;
@@ -185,8 +195,7 @@ bool ObjParser::LoadDataStructures()
 			// Read in the normals.
 			if (input == 'n')
 			{
-				fin >> normals[normalIndex].x >> normals[normalIndex].y >>
-					normals[normalIndex].z;
+				fin >> normals[normalIndex].x >> normals[normalIndex].y >> normals[normalIndex].z;
 
 				// Invert the Z normal to change to left hand system.
 				normals[normalIndex].z = normals[normalIndex].z * -1.0f;
@@ -197,19 +206,24 @@ bool ObjParser::LoadDataStructures()
 		// Read in the faces.
 		if (input == 'f')
 		{
+
 			fin.get(input);
 			if (input == ' ')
 			{
 				// Read the face data in backwards to convert it to a left hand system from right hand system.
-				fin >> faces[faceIndex].vIndex3 >> input2 >> faces[faceIndex].tIndex3 >>
-					input2 >> faces[faceIndex].nIndex3 >> faces[faceIndex].vIndex2 >> input2
-					>> faces[faceIndex].tIndex2 >> input2 >> faces[faceIndex].nIndex2 >>
-					faces[faceIndex].vIndex1 >> input2 >> faces[faceIndex].tIndex1 >> input2 >>
-					faces[faceIndex].nIndex1;
+				fin >>
+					faces[faceIndex].vIndex3 >> input2 >> faces[faceIndex].tIndex3 >> input2 >> faces[faceIndex].nIndex3 >>
+					faces[faceIndex].vIndex2 >> input2 >> faces[faceIndex].tIndex2 >> input2 >> faces[faceIndex].nIndex2 >>
+					faces[faceIndex].vIndex1 >> input2 >> faces[faceIndex].tIndex1 >> input2 >> faces[faceIndex].nIndex1;
+
+
+				dTriIndex ti[3] = { faces[faceIndex].vIndex1, faces[faceIndex].vIndex2, faces[faceIndex].vIndex3 };
+				dIndices[faceIndex] = ti;
 
 				faceIndex++;
 			}
 		}
+
 
 		// Read in the remainder of the line.
 		while (input != '\n')
@@ -240,18 +254,21 @@ bool ObjParser::LoadDataStructures()
 		fout << vertices[vIndex].x << ' ' << vertices[vIndex].y << ' ' << vertices[vIndex].z << ' '
 			<< texcoords[tIndex].x << ' ' << texcoords[tIndex].y << ' '
 			<< normals[nIndex].x << ' ' << normals[nIndex].y << ' ' << normals[nIndex].z << endl;
+
 		vIndex = faces[i].vIndex2 - 1;
 		tIndex = faces[i].tIndex2 - 1;
 		nIndex = faces[i].nIndex2 - 1;
 		fout << vertices[vIndex].x << ' ' << vertices[vIndex].y << ' ' << vertices[vIndex].z << ' '
 			<< texcoords[tIndex].x << ' ' << texcoords[tIndex].y << ' '
 			<< normals[nIndex].x << ' ' << normals[nIndex].y << ' ' << normals[nIndex].z << endl;
+
 		vIndex = faces[i].vIndex3 - 1;
 		tIndex = faces[i].tIndex3 - 1;
 		nIndex = faces[i].nIndex3 - 1;
 		fout << vertices[vIndex].x << ' ' << vertices[vIndex].y << ' ' << vertices[vIndex].z << ' '
 			<< texcoords[tIndex].x << ' ' << texcoords[tIndex].y << ' '
 			<< normals[nIndex].x << ' ' << normals[nIndex].y << ' ' << normals[nIndex].z << endl;
+
 	}
 
 	// Close the output file.

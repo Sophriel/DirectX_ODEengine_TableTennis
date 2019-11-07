@@ -11,13 +11,9 @@ ModelClass::ModelClass()
 	m_Texture = 0;
 	m_model = 0;
 }
-
-
 ModelClass::ModelClass(const ModelClass& other)
 {
 }
-
-
 ModelClass::~ModelClass()
 {
 }
@@ -76,13 +72,14 @@ void ModelClass::Render(ID3D11DeviceContext* deviceContext)
 	return;
 }
 
-
+int ModelClass::GetVertexCount()
+{
+	return m_vertexCount;
+}
 int ModelClass::GetIndexCount()
 {
 	return m_indexCount;
 }
-
-
 ID3D11ShaderResourceView* ModelClass::GetTexture()
 {
 	return m_Texture->GetTexture();
@@ -112,6 +109,7 @@ bool ModelClass::InitializeBuffers(ID3D11Device* device)
 	{
 		return false;
 	}
+
 
 	// Load the vertex array and index array with data.
 	for(i=0; i<m_vertexCount; i++)
@@ -298,7 +296,7 @@ bool ModelClass::LoadModel(const char* filename)
 	fin.get(input);
 
 	// Read in the vertex data.
-	for(i=0; i<m_vertexCount; i++)
+	for(i=0; i < m_vertexCount; i++)
 	{
 		fin >> m_model[i].x >> m_model[i].y >> m_model[i].z;
 		fin >> m_model[i].tu >> m_model[i].tv;
