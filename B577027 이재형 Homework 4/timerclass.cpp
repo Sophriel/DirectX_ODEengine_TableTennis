@@ -45,4 +45,4 @@ void TimerClass::Frame()
 float TimerClass::GetTime()
 {
 	return m_frameTime;
-}
+}

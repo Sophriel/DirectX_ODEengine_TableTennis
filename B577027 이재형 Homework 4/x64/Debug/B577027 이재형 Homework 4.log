@@ -1,0 +1,35 @@
+﻿  cameraclass.cpp
+c:\users\sophriel\onedrive - 홍익대학교\홍익대학교\코딩\컴퓨터 그래픽스 실습 예진짱 슈퍼 업그레이드버전\b577027 이재형 homework 4\b577027 이재형 homework 4\cameraclass.h(11): fatal error C1083: 포함 파일을 열 수 없습니다. 'd3dx10math.h': No such file or directory
+  cpuclass.cpp
+  d3dclass.cpp
+c:\users\sophriel\onedrive - 홍익대학교\홍익대학교\코딩\컴퓨터 그래픽스 실습 예진짱 슈퍼 업그레이드버전\b577027 이재형 homework 4\b577027 이재형 homework 4\d3dclass.h(23): fatal error C1083: 포함 파일을 열 수 없습니다. 'd3dx10math.h': No such file or directory
+  fontclass.cpp
+c:\users\sophriel\onedrive - 홍익대학교\홍익대학교\코딩\컴퓨터 그래픽스 실습 예진짱 슈퍼 업그레이드버전\b577027 이재형 homework 4\b577027 이재형 homework 4\fontclass.h(13): fatal error C1083: 포함 파일을 열 수 없습니다. 'd3dx10math.h': No such file or directory
+  fontshaderclass.cpp
+c:\users\sophriel\onedrive - 홍익대학교\홍익대학교\코딩\컴퓨터 그래픽스 실습 예진짱 슈퍼 업그레이드버전\b577027 이재형 homework 4\b577027 이재형 homework 4\fontshaderclass.h(13): fatal error C1083: 포함 파일을 열 수 없습니다. 'd3dx10math.h': No such file or directory
+  fpsclass.cpp
+  graphicsclass.cpp
+c:\users\sophriel\onedrive - 홍익대학교\홍익대학교\코딩\컴퓨터 그래픽스 실습 예진짱 슈퍼 업그레이드버전\b577027 이재형 homework 4\b577027 이재형 homework 4\d3dclass.h(23): fatal error C1083: 포함 파일을 열 수 없습니다. 'd3dx10math.h': No such file or directory
+  inputclass.cpp
+  lightclass.cpp
+c:\users\sophriel\onedrive - 홍익대학교\홍익대학교\코딩\컴퓨터 그래픽스 실습 예진짱 슈퍼 업그레이드버전\b577027 이재형 homework 4\b577027 이재형 homework 4\lightclass.h(11): fatal error C1083: 포함 파일을 열 수 없습니다. 'd3dx10math.h': No such file or directory
+  lightshaderclass.cpp
+c:\users\sophriel\onedrive - 홍익대학교\홍익대학교\코딩\컴퓨터 그래픽스 실습 예진짱 슈퍼 업그레이드버전\b577027 이재형 homework 4\b577027 이재형 homework 4\lightshaderclass.h(12): fatal error C1083: 포함 파일을 열 수 없습니다. 'd3dx10math.h': No such file or directory
+  main.cpp
+c:\users\sophriel\onedrive - 홍익대학교\홍익대학교\코딩\컴퓨터 그래픽스 실습 예진짱 슈퍼 업그레이드버전\b577027 이재형 homework 4\b577027 이재형 homework 4\d3dclass.h(23): fatal error C1083: 포함 파일을 열 수 없습니다. 'd3dx10math.h': No such file or directory
+  modelclass.cpp
+c:\users\sophriel\onedrive - 홍익대학교\홍익대학교\코딩\컴퓨터 그래픽스 실습 예진짱 슈퍼 업그레이드버전\b577027 이재형 homework 4\b577027 이재형 homework 4\modelclass.h(12): fatal error C1083: 포함 파일을 열 수 없습니다. 'd3dx10math.h': No such file or directory
+  OBJparser.cpp
+c:\users\sophriel\onedrive - 홍익대학교\홍익대학교\코딩\컴퓨터 그래픽스 실습 예진짱 슈퍼 업그레이드버전\b577027 이재형 homework 4\b577027 이재형 homework 4\objparser.h(9): fatal error C1083: 포함 파일을 열 수 없습니다. 'ode/ode.h': No such file or directory
+  ODEclass.cpp
+c:\users\sophriel\onedrive - 홍익대학교\홍익대학교\코딩\컴퓨터 그래픽스 실습 예진짱 슈퍼 업그레이드버전\b577027 이재형 homework 4\b577027 이재형 homework 4\odeclass.h(8): fatal error C1083: 포함 파일을 열 수 없습니다. 'ode/ode.h': No such file or directory
+  skyboxclass.cpp
+c:\users\sophriel\onedrive - 홍익대학교\홍익대학교\코딩\컴퓨터 그래픽스 실습 예진짱 슈퍼 업그레이드버전\b577027 이재형 homework 4\b577027 이재형 homework 4\skyboxclass.h(13): fatal error C1083: 포함 파일을 열 수 없습니다. 'd3dx10math.h': No such file or directory
+  systemclass.cpp
+c:\users\sophriel\onedrive - 홍익대학교\홍익대학교\코딩\컴퓨터 그래픽스 실습 예진짱 슈퍼 업그레이드버전\b577027 이재형 homework 4\b577027 이재형 homework 4\d3dclass.h(23): fatal error C1083: 포함 파일을 열 수 없습니다. 'd3dx10math.h': No such file or directory
+  textclass.cpp
+c:\users\sophriel\onedrive - 홍익대학교\홍익대학교\코딩\컴퓨터 그래픽스 실습 예진짱 슈퍼 업그레이드버전\b577027 이재형 homework 4\b577027 이재형 homework 4\fontclass.h(13): fatal error C1083: 포함 파일을 열 수 없습니다. 'd3dx10math.h': No such file or directory
+  textureclass.cpp
+c:\users\sophriel\onedrive - 홍익대학교\홍익대학교\코딩\컴퓨터 그래픽스 실습 예진짱 슈퍼 업그레이드버전\b577027 이재형 homework 4\b577027 이재형 homework 4\textureclass.h(12): fatal error C1083: 포함 파일을 열 수 없습니다. 'd3dx11tex.h': No such file or directory
+  timerclass.cpp
+  코드를 생성하고 있습니다...

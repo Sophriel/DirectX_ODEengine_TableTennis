@@ -138,7 +138,7 @@ bool ObjParser::LoadDataStructures()
 		return false;
 	}
 
-	dVertices = new float[vertexCount * 3];
+	dVertices = new double[vertexCount * 3];
 
 	// Initialize the indexes.
 	vertexIndex = 0;
@@ -168,12 +168,13 @@ bool ObjParser::LoadDataStructures()
 			{
 				fin >> vertices[vertexIndex].x >> vertices[vertexIndex].y >> vertices[vertexIndex].z;
 
-				dVertices[0 + (vertexIndex * 3)] = vertices[vertexIndex].x;
-				dVertices[1 + (vertexIndex * 3)] = vertices[vertexIndex].y;
-				dVertices[2 + (vertexIndex * 3)] = vertices[vertexIndex].z;
-
 				// Invert the Z vertex to change to left hand system.
 				vertices[vertexIndex].z = vertices[vertexIndex].z * -1.0f;
+
+				dVertices[0 + (vertexIndex * 3)] = (double)vertices[vertexIndex].x;
+				dVertices[1 + (vertexIndex * 3)] = (double)vertices[vertexIndex].y;
+				dVertices[2 + (vertexIndex * 3)] = (double)vertices[vertexIndex].z;
+
 				vertexIndex++;
 			}
 
@@ -211,7 +212,9 @@ bool ObjParser::LoadDataStructures()
 					faces[faceIndex].vIndex2 >> input2 >> faces[faceIndex].tIndex2 >> input2 >> faces[faceIndex].nIndex2 >>
 					faces[faceIndex].vIndex1 >> input2 >> faces[faceIndex].tIndex1 >> input2 >> faces[faceIndex].nIndex1;
 
-				dIndices.push_back(new dTriIndex[3]);
+				dIndices.push_back(faces[faceIndex].vIndex1 - 1);
+				dIndices.push_back(faces[faceIndex].vIndex2 - 1);
+				dIndices.push_back(faces[faceIndex].vIndex3 - 1);
 
 				faceIndex++;
 			}

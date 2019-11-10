@@ -62,7 +62,7 @@ bool TextClass::Initialize(ID3D11Device* device, ID3D11DeviceContext* deviceCont
 
 	for (int i = 0; i < 8; i++)
 	{
-		result = InitializeSentence(&m_sentence[i], 64, device);
+		result = InitializeSentence(&m_sentence[i], 128, device);
 		if (!result)
 		{
 			return false;
@@ -129,7 +129,7 @@ bool TextClass::SetScreen(ID3D11DeviceContext* deviceContext)
 	strcat_s(ScreenSizeString, tempString);
 
 	// Update the sentence vertex buffer with the new string information.
-	result = UpdateSentence(m_sentence[0], ScreenSizeString, m_screenWidth / 2.0f, 40, 0.0f, 0.0f, 1.0f, deviceContext);
+	result = UpdateSentence(m_sentence[0], ScreenSizeString, m_screenWidth / 2, 40, 0.0f, 0.0f, 1.0f, deviceContext);
 	if (!result)
 	{
 		return false;
@@ -143,7 +143,7 @@ bool TextClass::SetScreen(ID3D11DeviceContext* deviceContext)
 	strcat_s(ScreenSizeString, tempString);
 
 	// Update the sentence vertex buffer with the new string information.
-	result = UpdateSentence(m_sentence[1], ScreenSizeString, m_screenWidth / 2.0f, 70, 0.0f, 0.0f, 1.0f, deviceContext);
+	result = UpdateSentence(m_sentence[1], ScreenSizeString, m_screenWidth / 2, 70, 0.0f, 0.0f, 1.0f, deviceContext);
 	if (!result)
 	{
 		return false;
@@ -298,7 +298,7 @@ bool TextClass::SetObjs(int objs, ID3D11DeviceContext* deviceContext)
 	strcat_s(objsString, tempString);
 
 	// Update the sentence vertex buffer with the new string information.
-	result = UpdateSentence(m_sentence[6], objsString, m_screenWidth / 2.0f, 100, 0.0f, 1.0f, 0.3f, deviceContext);
+	result = UpdateSentence(m_sentence[6], objsString, m_screenWidth / 2, 100, 0.0f, 1.0f, 0.3f, deviceContext);
 	if (!result)
 	{
 		return false;
@@ -313,14 +313,14 @@ bool TextClass::SetPolys(int polys, ID3D11DeviceContext* deviceContext)
 	bool result;
 
 	// Convert the cpu integer to string format.
-	_itoa_s(polys, tempString, 32);
+	_itoa_s(polys, tempString, 30);
 
 	// Setup the cpu string.
 	strcpy_s(polysString, "Polygons: ");
 	strcat_s(polysString, tempString);
 
 	// Update the sentence vertex buffer with the new string information.
-	result = UpdateSentence(m_sentence[7], polysString, m_screenWidth / 2.0f, 130, 0.0f, 1.0f, 0.0f, deviceContext);
+	result = UpdateSentence(m_sentence[7], polysString, m_screenWidth / 2, 130, 0.0f, 1.0f, 0.0f, deviceContext);
 	if (!result)
 	{
 		return false;

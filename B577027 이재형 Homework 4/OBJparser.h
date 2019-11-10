@@ -11,7 +11,7 @@ using namespace std;
 
 class ObjParser
 {
-public:
+private:
 	struct VertexType
 	{
 		float x, y, z;
@@ -31,8 +31,8 @@ public:
 
 	int vertexCount, textureCount, normalCount, faceCount;
 
-	float *dVertices;
-	vector<dTriIndex[3]> dIndices;
+	double *dVertices;
+	vector<dTriIndex> dIndices;
 
 private:
 	bool result;
