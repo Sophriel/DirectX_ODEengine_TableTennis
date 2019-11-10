@@ -3,36 +3,33 @@
 ////////////////////////////////////////////////////////////////////////////////
 #include "graphicsclass.h"
 
-Model::Model()
-{
-
-}
-Model::~Model()
-{
-
-}
 GraphicsClass::GraphicsClass()
 {
 	m_D3D = 0;
 	m_Camera = 0;
 	m_LightShader = 0;
 	m_Light = 0;
+	m_Light1 = 0;
+	m_Light2 = 0;
 
 	m_Text = 0;
 
 	Objs = 0;
 	Polys = 0;
 
-	CamPos.x = 50.0f;
-	CamPos.y = 20.0f;
+	CamPos.x = 0.0f;
+	CamPos.y = 0.0f;
 	CamPos.z = 0.0f;
 
-	CamRot.x = 20.0f;
-	CamRot.y = -90.0f;
+	CamRot.x = 0.0f;
+	CamRot.y = 0.0f;
 	CamRot.z = 0.0f;
 
 	PreX = 0.0f;
 	PreY = 0.0f;
+
+	PlayerScore = 0;
+	ComScore = 0;
 
 	GroundModel.model = 0;
 	GroundModel.pos = D3DXVECTOR3(0.0f, -10.0f, 0.0f);
@@ -267,6 +264,37 @@ bool GraphicsClass::Initialize(int screenWidth, int screenHeight, HWND hwnd)
 	m_Light->SetSpecularColor(1.0f, 1.0f, 1.0f, 1.0f);
 	m_Light->SetSpecularPower(32.0f);	// specular power: lower value = greater effect
 
+	m_Light1 = new LightClass;
+	if (!m_Light)
+	{
+		return false;
+	}
+	m_Light1->SetDiffuseColor(0.0f, 1.0f, 0.0f, 0.0f);
+	m_Light1->SetPosition(GroundModel.pos.x, GroundModel.pos.y, GroundModel.pos.z);
+
+	m_Light2 = new LightClass;
+	if (!m_Light)
+	{
+		return false;
+	}
+	m_Light2->SetDiffuseColor(1.0f, 1.0f, 1.0f, 0.0f);
+	m_Light2->SetPosition(PlayerModel.pos.x + 1.0f, PlayerModel.pos.y, PlayerModel.pos.z);
+
+	m_Light3 = new LightClass;
+	if (!m_Light)
+	{
+		return false;
+	}
+	m_Light3->SetDiffuseColor(1.0f, 0.0f, 0.0f, 0.0f);
+	m_Light3->SetPosition(ComModel.pos.x, ComModel.pos.y, ComModel.pos.z);
+
+	m_Light4 = new LightClass;
+	if (!m_Light)
+	{
+		return false;
+	}
+	m_Light4->SetDiffuseColor(0.0f, 0.0f, 1.0f, 0.0f);
+	m_Light4->SetPosition(BallModel.pos.x, BallModel.pos.y, BallModel.pos.z);
 
 	// Initialize a base view matrix with the camera for 2D user interface rendering.
 	m_Camera->Render();
@@ -288,13 +316,66 @@ bool GraphicsClass::Initialize(int screenWidth, int screenHeight, HWND hwnd)
 		return false;
 	}
 
+	CamPos.x = 50.0f;
+	CamPos.y = 20.0f;
+	CamPos.z = 0.0f;
+
+	CamRot.x = 20.0f;
+	CamRot.y = -90.0f;
+	CamRot.z = 0.0f;
+
+
+	// Create the sound object. 
+	m_Sound = new SoundClass;
+	if (!m_Sound)
+	{
+		return false;
+	}
+	// Initialize the sound object. 
+	result = m_Sound->Initialize(hwnd);
+	if (!result)
+	{
+		MessageBox(hwnd, L"Could not initialize Direct Sound.", L"Error", MB_OK);
+		return false;
+	}
+
+
+
 	return true;
 }
 
 
 void GraphicsClass::Shutdown()
 {
+	// Release the sound object.
+	if (m_Sound)
+	{
+		m_Sound->Shutdown();
+		delete m_Sound;
+		m_Sound = 0;
+	}
+
 	// Release the light object.
+	if (m_Light4)
+	{
+		delete m_Light4;
+		m_Light4 = 0;
+	}
+	if (m_Light3)
+	{
+		delete m_Light3;
+		m_Light3 = 0;
+	}
+	if (m_Light2)
+	{
+		delete m_Light2;
+		m_Light2 = 0;
+	}
+	if (m_Light1)
+	{
+		delete m_Light1;
+		m_Light1 = 0;
+	}
 	if (m_Light)
 	{
 		delete m_Light;
@@ -433,12 +514,18 @@ bool GraphicsClass::Frame(int mouseX, int mouseY, int fps, int cpu, float frameT
 		return false;
 	}
 
+
 	// Update the rotation variable each frame.
 	rotation += (float)D3DX_PI * 0.005f;
 	if (rotation > 360.0f)
 	{
 		rotation -= 360.0f;
 	}
+
+	m_Light1->SetPosition(GroundModel.pos.x, GroundModel.pos.y, GroundModel.pos.z);
+	m_Light2->SetPosition(PlayerModel.pos.x + 3.0f, PlayerModel.pos.y, PlayerModel.pos.z);
+	m_Light3->SetPosition(ComModel.pos.x, ComModel.pos.y, ComModel.pos.z);
+	m_Light4->SetPosition(BallModel.pos.x, BallModel.pos.y, BallModel.pos.z);
 
 	// Render the graphics scene.
 	result = Render(rotation);
@@ -455,6 +542,21 @@ bool GraphicsClass::Render(float rotation)
 {
 	D3DXMATRIX worldMatrix, viewMatrix, projectionMatrix, orthoMatrix, translateMatrix;
 	bool result;
+
+	D3DXVECTOR4 diffuseColor[4];
+	D3DXVECTOR4 lightPosition[4];
+
+	// Create the diffuse color array from the four light colors.
+	diffuseColor[0] = m_Light1->GetDiffuseColor();
+	diffuseColor[1] = m_Light2->GetDiffuseColor();
+	diffuseColor[2] = m_Light3->GetDiffuseColor();
+	diffuseColor[3] = m_Light4->GetDiffuseColor();
+
+	// Create the light position array from the four light positions.
+	lightPosition[0] = m_Light1->GetPosition();
+	lightPosition[1] = m_Light2->GetPosition();
+	lightPosition[2] = m_Light3->GetPosition();
+	lightPosition[3] = m_Light4->GetPosition();
 
 	// Clear the buffers to begin the scene.
 	m_D3D->BeginScene(0.0f, 0.0f, 0.0f, 1.0f);
@@ -487,9 +589,12 @@ bool GraphicsClass::Render(float rotation)
 		D3DXMatrixMultiply(&worldMatrix, &worldMatrix, &translateMatrix);
 
 		Models.at(i)->model->Render(m_D3D->GetDeviceContext());
+		//result = m_LightShader->Render(m_D3D->GetDeviceContext(), Models.at(i)->model->GetIndexCount(), worldMatrix, viewMatrix, projectionMatrix,
+		//	Models.at(i)->model->GetTexture(), m_Light->GetDirection(), m_Light->GetAmbientColor(), m_Light->GetDiffuseColor(),
+		//	m_Camera->GetPosition(), m_Light->GetSpecularColor(), m_Light->GetSpecularPower());
 		result = m_LightShader->Render(m_D3D->GetDeviceContext(), Models.at(i)->model->GetIndexCount(), worldMatrix, viewMatrix, projectionMatrix,
-			Models.at(i)->model->GetTexture(), m_Light->GetDirection(), m_Light->GetAmbientColor(), m_Light->GetDiffuseColor(),
-			m_Camera->GetPosition(), m_Light->GetSpecularColor(), m_Light->GetSpecularPower());
+			Models.at(i)->model->GetTexture(), diffuseColor, lightPosition);
+
 		if (!result)
 		{
 			return false;
@@ -497,6 +602,7 @@ bool GraphicsClass::Render(float rotation)
 	}
 
 	D3DXMatrixIdentity(&worldMatrix);
+
 	//  2차원 파트
 	// Turn off the Z buffer to begin all 2D rendering.
 	m_D3D->TurnZBufferOff();
@@ -668,6 +774,10 @@ void GraphicsClass::ManageGame()
 		BallModel.pos = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 		dBodySetForce(BallModel.body, 0, 0, 0);
 		dBodySetPosition(BallModel.body, BallModel.pos.x, BallModel.pos.y, BallModel.pos.z);
+
+		ComScore++;
+
+		m_Sound->PlayLose();
 	}
 
 	//  적 방향 (플레이어 승)
@@ -676,6 +786,12 @@ void GraphicsClass::ManageGame()
 		BallModel.pos = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 		dBodySetForce(BallModel.body, 0, 0, 0);
 		dBodySetPosition(BallModel.body, BallModel.pos.x, BallModel.pos.y, BallModel.pos.z);
+
+		PlayerScore++;
+
+		m_Sound->PlayWin();
 	}
+
+	m_Text->SetScore(PlayerScore, ComScore, m_D3D->GetDeviceContext());
 }
 

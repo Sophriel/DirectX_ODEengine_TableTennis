@@ -1,4 +1,5 @@
 #pragma once
+#pragma warning (disable : 4005)
 
 ////////////////////////////////////////////////////////////////////////////////
 // Filename: textclass.h
@@ -50,6 +51,8 @@ public:
 	bool SetObjs(int, ID3D11DeviceContext*);
 	bool SetPolys(int, ID3D11DeviceContext*);
 
+	bool SetScore(int, int, ID3D11DeviceContext*);
+
 private:
 	bool InitializeSentence(SentenceType**, int, ID3D11Device*);
 	bool UpdateSentence(SentenceType*, const char*, int, int, float, float, float, ID3D11DeviceContext*);
@@ -62,6 +65,6 @@ private:
 	int m_screenWidth, m_screenHeight;
 	D3DXMATRIX m_baseViewMatrix;
 
-	SentenceType *m_sentence[8];
+	SentenceType *m_sentence[10];
 };
 #endif

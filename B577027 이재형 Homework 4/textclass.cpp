@@ -6,7 +6,7 @@
 TextClass::TextClass() {
 	m_Font = 0;
 	m_FontShader = 0;
-	for (int i = 0; i < 8; i++)
+	for (int i = 0; i < 10; i++)
 	{
 		m_sentence[i] = 0;
 	}
@@ -60,9 +60,9 @@ bool TextClass::Initialize(ID3D11Device* device, ID3D11DeviceContext* deviceCont
 		return false;
 	}
 
-	for (int i = 0; i < 8; i++)
+	for (int i = 0; i < 10; i++)
 	{
-		result = InitializeSentence(&m_sentence[i], 128, device);
+		result = InitializeSentence(&m_sentence[i], 64, device);
 		if (!result)
 		{
 			return false;
@@ -74,7 +74,7 @@ bool TextClass::Initialize(ID3D11Device* device, ID3D11DeviceContext* deviceCont
 
 void TextClass::Shutdown()
 {
-	for (int i = 0; i < 8; i++)
+	for (int i = 0; i < 10; i++)
 	{
 		ReleaseSentence(&m_sentence[i]);
 	}
@@ -103,7 +103,7 @@ bool TextClass::Render(ID3D11DeviceContext* deviceContext, D3DXMATRIX worldMatri
 {
 	bool result;
 
-	for (int i = 0; i < 8; i++)
+	for (int i = 0; i < 10; i++)
 	{
 		result = RenderSentence(deviceContext, m_sentence[i], worldMatrix, orthoMatrix);
 		if (!result)
@@ -186,15 +186,15 @@ bool TextClass::SetCameraPosition(float cameraX, float cameraY, float cameraZ, I
 	char cameraString[128];
 	bool result;
 
-	_itoa_s(cameraX, tempString, 10);
+	_itoa_s((int)cameraX, tempString, 10);
 	strcpy_s(cameraString, "Camera X: ");
 	strcat_s(cameraString, tempString);
 
-	_itoa_s(cameraY, tempString, 10);
+	_itoa_s((int)cameraY, tempString, 10);
 	strcat_s(cameraString, " Camera Y: ");
 	strcat_s(cameraString, tempString);
 
-	_itoa_s(cameraZ, tempString, 10);
+	_itoa_s((int)cameraZ, tempString, 10);
 	strcat_s(cameraString, " Camera Z: ");
 	strcat_s(cameraString, tempString);
 
@@ -291,7 +291,7 @@ bool TextClass::SetObjs(int objs, ID3D11DeviceContext* deviceContext)
 	bool result;
 
 	// Convert the fps integer to string format.
-	_itoa_s(objs, tempString, 30);
+	_itoa_s(objs, tempString, 10);
 
 	// Setup the fps string.
 	strcpy_s(objsString, "Objects: ");
@@ -313,7 +313,7 @@ bool TextClass::SetPolys(int polys, ID3D11DeviceContext* deviceContext)
 	bool result;
 
 	// Convert the cpu integer to string format.
-	_itoa_s(polys, tempString, 30);
+	_itoa_s(polys, tempString, 10);
 
 	// Setup the cpu string.
 	strcpy_s(polysString, "Polygons: ");
@@ -329,6 +329,36 @@ bool TextClass::SetPolys(int polys, ID3D11DeviceContext* deviceContext)
 	return true;
 }
 
+bool TextClass::SetScore(int pScore, int cScore, ID3D11DeviceContext* deviceContext)
+{
+	char tempString[128];
+	char polysString[128];
+	bool result;
+
+	_itoa_s(pScore, tempString, 10);
+
+	strcpy_s(polysString, "Player : ");
+	strcat_s(polysString, tempString);
+
+	result = UpdateSentence(m_sentence[8], polysString, 300, 400, 0.0f, 1.0f, 1.0f, deviceContext);
+	if (!result)
+	{
+		return false;
+	}
+
+	_itoa_s(cScore, tempString, 10);
+
+	strcpy_s(polysString, "Computer : ");
+	strcat_s(polysString, tempString);
+
+	result = UpdateSentence(m_sentence[9], polysString, 500 + m_screenWidth / 2, 400, 1.0f, 1.0f, 0.0f, deviceContext);
+	if (!result)
+	{
+		return false;
+	}
+
+	return true;
+}
 
 bool TextClass::InitializeSentence(SentenceType** sentence, int maxLength, ID3D11Device* device)
 {

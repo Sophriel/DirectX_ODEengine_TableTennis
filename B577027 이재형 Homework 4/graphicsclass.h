@@ -18,6 +18,7 @@
 #include "textclass.h"
 #include "skyboxclass.h"
 #include "ODEclass.h"
+#include "soundclass.h"
 
 /////////////
 // GLOBALS //
@@ -32,26 +33,24 @@ const float SCREEN_NEAR = 0.1f;
 ////////////////////////////////////////////////////////////////////////////////
 
 
-struct Model
-{
-public:
-	Model();
-	~Model();
-
-	ModelClass* model;
-	const char* filename;
-	const WCHAR* texturename;
-
-	D3DXVECTOR3 pos;
-	dBodyID body;
-	dGeomID geom;
-
-	dReal bVec3[3];
-};
 
 class GraphicsClass
 {
 public:
+	struct Model
+	{
+	public:
+		ModelClass* model;
+		const char* filename;
+		const WCHAR* texturename;
+
+		D3DXVECTOR3 pos;
+		dBodyID body;
+		dGeomID geom;
+
+		dReal bVec3[3];
+	};
+
 	GraphicsClass();
 	GraphicsClass(const GraphicsClass&);
 	~GraphicsClass();
@@ -81,7 +80,7 @@ private:
 	D3DClass* m_D3D;
 	CameraClass* m_Camera;
 	LightShaderClass* m_LightShader;
-	LightClass* m_Light;
+	LightClass* m_Light, *m_Light1, *m_Light2, *m_Light3, *m_Light4;
 	TextClass* m_Text;
 
 	SkyboxClass* m_Skybox;
@@ -96,5 +95,10 @@ private:
 	D3DXVECTOR3 CamPos, CamRot;
 	float speed = 1.0f;
 	float PreX, PreY;
+
+	int PlayerScore, ComScore;
+
+
+	SoundClass* m_Sound;
 };
 #endif

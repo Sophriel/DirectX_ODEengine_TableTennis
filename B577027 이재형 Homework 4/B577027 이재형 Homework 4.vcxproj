@@ -88,13 +88,13 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>C:\ode-0.16\include;$(DXSDK_DIR)Include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\include;$(DXSDK_DIR)Include</AdditionalIncludeDirectories>
       <DisableSpecificWarnings>4005</DisableSpecificWarnings>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Windows</SubSystem>
-      <AdditionalLibraryDirectories>C:\ode-0.16\lib\DebugDoubleDLL;$(DXSDK_DIR)Lib/x86</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>..\lib\DebugDoubleDLL;$(DXSDK_DIR)Lib/x86</AdditionalLibraryDirectories>
       <AdditionalDependencies>ode_doubled.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
@@ -160,6 +160,7 @@
     <ClCompile Include="OBJparser.cpp" />
     <ClCompile Include="ODEclass.cpp" />
     <ClCompile Include="skyboxclass.cpp" />
+    <ClCompile Include="soundclass.cpp" />
     <ClCompile Include="systemclass.cpp" />
     <ClCompile Include="textclass.cpp" />
     <ClCompile Include="textureclass.cpp" />
@@ -179,6 +180,7 @@
     <ClInclude Include="modelclass.h" />
     <ClInclude Include="OBJparser.h" />
     <ClInclude Include="skyboxclass.h" />
+    <ClInclude Include="soundclass.h" />
     <ClInclude Include="systemclass.h" />
     <ClInclude Include="textclass.h" />
     <ClInclude Include="textureclass.h" />

@@ -61,6 +61,7 @@ bool SystemClass::Initialize()
 		return false;
 	}
 	
+
 	// Create the fps object.
 	m_Fps = new FpsClass;
 	if (!m_Fps)
@@ -309,8 +310,8 @@ void SystemClass::InitializeWindows(int& screenWidth, int& screenHeight)
 	else
 	{
 		// If windowed then set it to 800x600 resolution.
-		screenWidth  = 2560;
-		screenHeight = 1440;
+		screenWidth  = 1920;
+		screenHeight = 1080;
 
 		// Place the window in the middle of the screen.
 		posX = (GetSystemMetrics(SM_CXSCREEN) - screenWidth)  / 2;

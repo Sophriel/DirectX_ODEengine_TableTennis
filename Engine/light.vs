@@ -20,6 +20,11 @@ cbuffer CameraBuffer
 	float padding;
 };
 
+cbuffer LightPositionBuffer 
+{ 
+	float4 lightPosition[4]; 
+};
+
 
 //////////////
 // TYPEDEFS //
@@ -36,7 +41,13 @@ struct PixelInputType
     float4 position : SV_POSITION;
     float2 tex : TEXCOORD0;
 	float3 normal : NORMAL;
-	float3 viewDirection : TEXCOORD1;
+	//float3 viewDirection : TEXCOORD1;
+
+	float3 lightPos1 : TEXCOORD1; 
+	float3 lightPos2 : TEXCOORD2; 
+	float3 lightPos3 : TEXCOORD3; 
+	float3 lightPos4 : TEXCOORD4;
+
 };
 
 
@@ -69,11 +80,27 @@ PixelInputType LightVertexShader(VertexInputType input)
 	// Calculate the position of the vertex in the world.
     worldPosition = mul(input.position, worldMatrix);
 
-    // Determine the viewing direction based on the position of the camera and the position of the vertex in the world.
-    output.viewDirection = cameraPosition.xyz - worldPosition.xyz;
+	//  직사광선
+    //// Determine the viewing direction based on the position of the camera and the position of the vertex in the world.
+    //output.viewDirection = cameraPosition.xyz - worldPosition.xyz;
 	
-    // Normalize the viewing direction vector.
-    output.viewDirection = normalize(output.viewDirection);
+    //// Normalize the viewing direction vector.
+    //output.viewDirection = normalize(output.viewDirection);
+	//  직사광선 끝
+	
+	//  포인트라이트
+	// Determine the light positions based on the position of the lights and the position of the vertex in the world. 
+	output.lightPos1.xyz = lightPosition[0].xyz - worldPosition.xyz; 
+	output.lightPos2.xyz = lightPosition[1].xyz - worldPosition.xyz; 
+	output.lightPos3.xyz = lightPosition[2].xyz - worldPosition.xyz; 
+	output.lightPos4.xyz = lightPosition[3].xyz - worldPosition.xyz; 
+
+	// Normalize the light position vectors. 
+	output.lightPos1 = normalize(output.lightPos1); 
+	output.lightPos2 = normalize(output.lightPos2); 
+	output.lightPos3 = normalize(output.lightPos3); 
+	output.lightPos4 = normalize(output.lightPos4);
+
 
     return output;
 }

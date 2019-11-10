@@ -43,6 +43,16 @@ private:
 		D3DXVECTOR4 specularColor;
 	};
 
+	struct LightColorBufferType 
+	{ 
+		D3DXVECTOR4 diffuseColor[4]; 
+	}; 
+	struct LightPositionBufferType 
+	{ 
+		D3DXVECTOR4 lightPosition[4]; 
+	};
+
+
 public:
 	LightShaderClass();
 	LightShaderClass(const LightShaderClass&);
@@ -50,8 +60,11 @@ public:
 
 	bool Initialize(ID3D11Device*, HWND);
 	void Shutdown();
+	//  직사광선
 	bool Render(ID3D11DeviceContext*, int, D3DXMATRIX, D3DXMATRIX, D3DXMATRIX, ID3D11ShaderResourceView*, D3DXVECTOR3, D3DXVECTOR4, D3DXVECTOR4, 
 				D3DXVECTOR3, D3DXVECTOR4, float);
+	//  포인트라이트
+	bool Render(ID3D11DeviceContext*, int, D3DXMATRIX, D3DXMATRIX, D3DXMATRIX, ID3D11ShaderResourceView*, D3DXVECTOR4[], D3DXVECTOR4[]);
 
 	void SetSampler(ID3D11Device*, UINT);
 
@@ -61,8 +74,12 @@ private:
 	void ShutdownShader();
 	void OutputShaderErrorMessage(ID3D10Blob*, HWND, const WCHAR*);
 
+	//  직사광선
 	bool SetShaderParameters(ID3D11DeviceContext*, D3DXMATRIX, D3DXMATRIX, D3DXMATRIX, ID3D11ShaderResourceView*, D3DXVECTOR3, D3DXVECTOR4, D3DXVECTOR4,
 							 D3DXVECTOR3, D3DXVECTOR4, float);
+	//  포인트라이트
+	bool SetShaderParameters(ID3D11DeviceContext*, D3DXMATRIX, D3DXMATRIX, D3DXMATRIX, ID3D11ShaderResourceView*, D3DXVECTOR4[], D3DXVECTOR4[]);
+
 	void RenderShader(ID3D11DeviceContext*, int);
 
 private:
@@ -73,6 +90,8 @@ private:
 	ID3D11Buffer* m_matrixBuffer;
 	ID3D11Buffer* m_cameraBuffer;
 	ID3D11Buffer* m_lightBuffer;
+	ID3D11Buffer* m_lightColorBuffer; 
+	ID3D11Buffer* m_lightPositionBuffer;
 };
 
 #endif

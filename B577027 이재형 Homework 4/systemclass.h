@@ -26,6 +26,7 @@
 #include "fpsclass.h"
 #include "cpuclass.h"
 #include "timerclass.h"
+#include "soundclass.h"
 
 ////////////////////////////////////////////////////////////////////////////////
 // Class name: SystemClass
